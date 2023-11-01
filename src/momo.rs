@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 use color_space::{CompareCie2000, Rgb};
 use image::{DynamicImage, GenericImageView, Pixel};
+use rusty_tesseract::{Args, Image};
+use crate::defs;
 
 const THRESHOLD: f64 = 10.0;
 
@@ -12,12 +14,38 @@ const MOMO_RGB: Rgb = Rgb{
 
 pub fn is_momo_screenshot(path: &str) -> anyhow::Result<bool> {
     let img = image::open(path)?;
-    let rgb = get_most_frequent_color(img);
+    let rgb = get_most_frequent_color(&img);
     let diff = MOMO_RGB.compare_cie2000(&rgb);
-    return Ok(diff < THRESHOLD);
+    let mut result = diff < THRESHOLD;
+    if unsafe { defs::USE_OCR } {
+        result = result && ocr_find_momo(&img)?;
+    }
+    return Ok(result);
 }
 
-fn get_most_frequent_color(img: DynamicImage) -> Rgb {
+pub fn ocr_find_momo(img: &DynamicImage) -> anyhow::Result<bool> {
+    let img = Image::from_dynamic_image(img)?;
+    let args = Args {
+        lang: "eng".to_string(),
+        config_variables: HashMap::from([(
+            "tessedit_char_whitelist".into(),
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".into(),
+        )]),
+        dpi: None,
+        psm: None,
+        oem: None,
+    };
+    let output = rusty_tesseract::image_to_string(&img, &args)?;
+    println!("The String output is: {:?}", output);
+    if output.find("Momo").is_some() {
+        return Ok(true)
+    }else if output.find("momo").is_some() {
+        return Ok(true)
+    }
+    Ok(false)
+}
+
+fn get_most_frequent_color(img: &DynamicImage) -> Rgb {
     let width = img.width();
     let height = img.height();
     let mut color_counts: HashMap<image::Rgb<u8>, u64> = HashMap::new();
