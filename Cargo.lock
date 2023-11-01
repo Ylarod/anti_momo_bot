@@ -61,11 +61,13 @@ dependencies = [
  "image",
  "log",
  "pretty_env_logger",
+ "reqwest",
  "rust-i18n",
  "rusty-tesseract",
  "teloxide",
  "tempfile",
  "tokio",
+ "url",
 ]
 
 [[package]]
