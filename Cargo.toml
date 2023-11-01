@@ -18,3 +18,8 @@ tempfile = "3.8.1"
 anyhow = "1.0.75"
 rust-i18n = "2.2.1"
 rusty-tesseract = "1.1.9"
+
+[profile.release]
+strip = true
+opt-level = "z"
+lto = true
