@@ -5,7 +5,7 @@ use teloxide::prelude::{Message, Requester, ResponseResult};
 use teloxide::net::Download;
 use teloxide::types::{ChatMember, ChatPermissions};
 use teloxide::payloads::{RestrictChatMemberSetters, SendMessageSetters};
-use crate::{img, defs};
+use crate::{momo, defs};
 
 
 pub async fn message_handler(bot: Bot, message: Message) -> ResponseResult<()>{
@@ -31,7 +31,7 @@ pub async fn message_handler(bot: Bot, message: Message) -> ResponseResult<()>{
             let local_path = format!("/tmp/{}", path);
             let mut dst = tokio::fs::File::create(&local_path).await?;
             bot.download_file(path.as_str(), &mut dst).await?;
-            if img::is_momo_screenshot(&local_path.as_str()).ok() == Some(true){
+            if momo::is_momo_screenshot(&local_path.as_str()).ok() == Some(true){
                 let bot_id = bot.get_me().await?.id;
                 let can_mute = bot
                     .get_chat_member(message.chat.id, bot_id)

@@ -38,7 +38,7 @@ fn get_most_frequent_color(img: DynamicImage) -> Rgb {
 
 #[cfg(test)]
 mod tests {
-    use crate::img::is_momo_screenshot;
+    use crate::momo::is_momo_screenshot;
 
     #[test]
     fn momo_judge() {
