@@ -32,7 +32,7 @@ impl PermCache {
             None => {
                 drop(lock);
                 Ok(self.update_bot_admin(chat_id).await?)
-            },
+            }
             Some(perm) => Ok(*perm),
         }
     }
@@ -64,12 +64,12 @@ impl PermCache {
             None => {
                 drop(lock);
                 Ok(self.update_user_admin(user_id, chat_id).await?)
-            },
+            }
             Some(perm) => match perm.get(&user_id) {
                 None => {
                     drop(lock);
                     Ok(self.update_user_admin(user_id, chat_id).await?)
-                },
+                }
                 Some(perm) => Ok(*perm),
             },
         };
@@ -81,7 +81,12 @@ impl PermCache {
             .get_chat_member(chat_id, user_id)
             .await
             .map(|member: ChatMember| member.is_owner() || member.is_administrator())?;
-        log::debug!("user_id: {}, chat_id: {}, is_admin: {}", user_id, chat_id, perm);
+        log::debug!(
+            "user_id: {}, chat_id: {}, is_admin: {}",
+            user_id,
+            chat_id,
+            perm
+        );
         self.user_admin
             .clone()
             .write()

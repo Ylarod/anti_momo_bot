@@ -7,7 +7,9 @@ use std::ops::Add;
 use teloxide::net::Download;
 use teloxide::payloads::{RestrictChatMemberSetters, SendMessageSetters};
 use teloxide::prelude::{Message, Requester};
-use teloxide::types::{ChatMemberUpdated, ChatPermissions, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, User};
+use teloxide::types::{
+    ChatMemberUpdated, ChatPermissions, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, User,
+};
 use teloxide::utils::command::BotCommands;
 use teloxide::Bot;
 
@@ -16,7 +18,6 @@ pub struct TranslateContext {
 }
 
 impl TranslateContext {
-
     fn new() -> Self {
         TranslateContext {
             locale: "en".to_string(),
@@ -91,8 +92,12 @@ pub async fn command_handler(bot: Bot, message: Message, command: Command) -> Re
                 .username
                 .clone()
                 .context("antimomobot")?;
-            let url = format!("https://t.me/{}?startgroup=start&admin=can_restrict_members", username.as_str());
-            let btn = InlineKeyboardButton::url(ctx.t("welcome_setmeasadmin"),Url::parse(url.as_str())?);
+            let url = format!(
+                "https://t.me/{}?startgroup=start&admin=can_restrict_members",
+                username.as_str()
+            );
+            let btn =
+                InlineKeyboardButton::url(ctx.t("welcome_setmeasadmin"), Url::parse(url.as_str())?);
             let btns = [btn];
             bot.send_message(message.chat.id, msg)
                 .reply_to_message_id(message.id)
@@ -110,10 +115,12 @@ pub async fn command_handler(bot: Bot, message: Message, command: Command) -> Re
 }
 
 pub async fn message_handler(bot: Bot, message: Message, perm: PermCache) -> Result<()> {
-    log::debug!("[{}] {}: {}",
+    log::debug!(
+        "[{}] {}: {}",
         message.chat.title().unwrap_or(""),
         message.from().context("")?.first_name,
-        message.text().unwrap_or(""));
+        message.text().unwrap_or("")
+    );
     let ctx = TranslateContext::from_message(&message);
     if let Some(photos) = message.photo() {
         log::trace!("message contains photo");
