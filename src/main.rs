@@ -1,6 +1,6 @@
-mod momo;
-mod handler;
 mod defs;
+mod handler;
+mod momo;
 
 use std::env;
 use std::sync::atomic::Ordering;

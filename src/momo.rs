@@ -21,7 +21,7 @@ pub fn is_momo_screenshot(path: &str) -> anyhow::Result<bool> {
     if defs::USE_OCR.load(Ordering::Acquire) {
         result = result && ocr_find_momo(&img)?;
     }
-    return Ok(result);
+    Ok(result)
 }
 
 pub fn ocr_find_momo(img: &DynamicImage) -> anyhow::Result<bool> {
@@ -38,9 +38,7 @@ pub fn ocr_find_momo(img: &DynamicImage) -> anyhow::Result<bool> {
     };
     let output = rusty_tesseract::image_to_string(&img, &args)?;
     println!("The String output is: {:?}", output);
-    if output.find("Momo").is_some() {
-        return Ok(true);
-    } else if output.find("momo").is_some() {
+    if output.contains("Momo") || output.contains("momo") {
         return Ok(true);
     }
     Ok(false)
@@ -70,7 +68,7 @@ fn get_most_frequent_color(img: &DynamicImage) -> Rgb {
         .iter()
         .max_by(|(_, a), (_, b)| a.cmp(b))
         .unwrap();
-    return result.0;
+    result.0
 }
 
 #[cfg(test)]
