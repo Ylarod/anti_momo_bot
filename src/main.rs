@@ -3,6 +3,7 @@ mod handler;
 mod defs;
 
 use std::env;
+use std::sync::atomic::Ordering;
 use teloxide::Bot;
 
 rust_i18n::i18n!("locales", fallback = "en");
@@ -12,7 +13,7 @@ async fn main() {
     if let Ok(use_ocr) = env::var("USE_OCR") {
         if use_ocr == "1" || use_ocr.to_lowercase() == "true" {
             println!("USE_OCR is enabled.");
-            unsafe { defs::USE_OCR = true; }
+            defs::USE_OCR.store(true, Ordering::Release)
         }
     }
     let bot = Bot::from_env();
