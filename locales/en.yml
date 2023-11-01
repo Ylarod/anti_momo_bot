@@ -1,0 +1,5 @@
+_version: 1
+hello: "Welcome to AntiMomoBot"
+momo_found: "Find momo!"
+restrict: "You've been muted! Do not send momo screenshot!"
+restrict_failed: "Can't mute!"

@@ -1,0 +1,20 @@
+[package]
+name = "anti_momo_bot"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+image = "0.24.7"
+teloxide = { version = "0.12", features = ["macros"] }
+log = "0.4"
+pretty_env_logger = "0.5.0"
+tokio = { version =  "1.8", features = ["rt-multi-thread", "macros"] }
+color_space = "0.5.3"
+chrono = "0.4.31"
+bytes = "1.5.0"
+tempfile = "3.8.1"
+anyhow = "1.0.75"
+rust-i18n = "2.2.1"
+tesserae = "0.3.1"
