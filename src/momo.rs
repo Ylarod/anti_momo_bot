@@ -37,7 +37,7 @@ pub fn ocr_find_momo(img: &DynamicImage) -> anyhow::Result<bool> {
         oem: None,
     };
     let output = rusty_tesseract::image_to_string(&img, &args)?;
-    println!("The String output is: {:?}", output);
+    log::trace!("The String output is: {:?}", output);
     if output.contains("Momo") || output.contains("momo") {
         return Ok(true);
     }

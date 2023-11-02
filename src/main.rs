@@ -18,7 +18,7 @@ async fn main() {
     log::info!("Available locales: {:?}", rust_i18n::available_locales!());
     if let Ok(use_ocr) = env::var("USE_OCR") {
         if use_ocr == "1" || use_ocr.to_lowercase() == "true" {
-            println!("USE_OCR is enabled.");
+            log::info!("USE_OCR is enabled.");
             defs::USE_OCR.store(true, Ordering::Release)
         }
     }
